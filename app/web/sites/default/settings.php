@@ -737,7 +737,13 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
 $settings['trusted_host_patterns'] = [
   '^localhost$',
   '^127\.0\.0\.1$',
+  '^familyhistory.dankeenan.org$',
 ];
+if (getenv('APP_DOMAINS')) {
+  foreach (explode(';', getenv('APP_DOMAINS')) as $domain) {
+    $settings['trusted_host_patterns'][] = '^' . preg_quote($domain) . '$';
+  }
+}
 
 /**
  * The default list of directories that will be ignored by Drupal's file API.
