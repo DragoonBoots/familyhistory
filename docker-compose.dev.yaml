@@ -3,6 +3,7 @@ version: "3"
 services:
   app:
     build:
+      dockerfile: Dockerfile.dev
       target: app_dev
     ports:
       - "8080:80"
@@ -16,8 +17,8 @@ services:
     depends_on:
       - db
       - mail
-#    volumes:
-#      - "./app:/opt/drupal"
+    volumes:
+      - "./app:/opt/drupal"
 
   db:
     image: "postgres:12"

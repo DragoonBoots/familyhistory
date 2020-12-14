@@ -84,3 +84,32 @@ RUN set -eux; \
 	chown -Rv www-data:www-data web/sites web/modules web/themes; \
 	rmdir /var/www/html; \
 	ln -sf /opt/drupal/web /var/www/html;
+
+#######################################
+# APP DEVELOPMENT SUPPORT
+#######################################
+FROM base as app_dev
+
+# Enable Drupal's development mode
+ENV APP_DEV_MODE=1
+
+# Development php.ini
+RUN cp ${PHP_INI_DIR}/php.ini-development ${PHP_INI_DIR}/php.ini
+
+# Install xdebug
+RUN set -eux; \
+    pecl install xdebug; \
+    docker-php-ext-enable xdebug
+RUN { \
+		echo 'xdebug.mode=debug'; \
+		echo 'xdebug.discover_client_host=1'; \
+	} >> ${PHP_INI_DIR}/conf.d/docker-php-ext-xdebug.ini
+
+# Setup mailhog
+RUN { \
+		echo 'sendmail_path = /usr/sbin/sendmail -S mail:1025'; \
+	} > ${PHP_INI_DIR}/conf.d/mailhog.ini
+
+# Install pandoc (needed for data migrations)
+RUN apt-get update; \
+	apt-get install -y --no-install-recommends pandoc
