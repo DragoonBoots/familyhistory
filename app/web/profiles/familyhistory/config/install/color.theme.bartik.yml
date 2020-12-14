@@ -1,0 +1,16 @@
+palette:
+  top: '#4c1c58'
+  bottom: '#593662'
+  bg: '#fffdf7'
+  sidebar: '#edede7'
+  sidebarborders: '#e7e7e7'
+  footer: '#2c2c28'
+  titleslogan: '#ffffff'
+  text: '#301313'
+  link: '#9d408d'
+logo: 'public://color/logo.svg'
+stylesheets:
+  - 'public://color/colors.css'
+files:
+  - 'public://color/logo.svg'
+  - 'public://color/colors.css'

@@ -1,0 +1,131 @@
+diff --git a/core/modules/book/src/BookManager.php b/core/modules/book/src/BookManager.php
+index 504f042ea553299e76ebf13d12c96f7b09c16362..79cdf938c8781a068358616e31837521667d67a5 100644
+--- a/core/modules/book/src/BookManager.php
++++ b/core/modules/book/src/BookManager.php
+@@ -976,7 +976,6 @@ public function bookTreeCheckAccess(&$tree, $node_links = []) {
+    *   The book tree to operate on.
+    */
+   protected function doBookTreeCheckAccess(&$tree) {
+-    $new_tree = [];
+     foreach ($tree as $key => $v) {
+       $item = &$tree[$key]['link'];
+       $this->bookLinkTranslate($item);
+@@ -984,16 +983,19 @@ protected function doBookTreeCheckAccess(&$tree) {
+         if ($tree[$key]['below']) {
+           $this->doBookTreeCheckAccess($tree[$key]['below']);
+         }
+-        // The weights are made a uniform 5 digits by adding 50000 as an offset.
+-        // After calling $this->bookLinkTranslate(), $item['title'] has the
+-        // translated title. Adding the nid to the end of the index insures that
+-        // it is unique.
+-        $new_tree[(50000 + $item['weight']) . ' ' . $item['title'] . ' ' . $item['nid']] = $tree[$key];
+       }
+     }
+     // Sort siblings in the tree based on the weights and localized titles.
+-    ksort($new_tree);
+-    $tree = $new_tree;
++    uasort($tree, function (array $a, array $b): int {
++      $item_a = &$a['link'];
++      $item_b = &$b['link'];
++      if (($cmp_weight = $item_a['weight'] - $item_b['weight']) !== 0) {
++        // Weights differ
++        return $cmp_weight;
++      }
++
++      return strnatcmp($item_a['title'], $item_b['title']);
++    });
+   }
+ 
+   /**
+@@ -1010,8 +1012,13 @@ public function bookLinkTranslate(&$link) {
+     if ($link['access']) {
+       // The node label will be the value for the current user's language.
+       $link['title'] = $node->label();
+-      $link['options'] = [];
+     }
++    else {
++      // Ensure keys are always present
++      $link['title'] = '';
++    }
++    $link['options'] = [];
++
+     return $link;
+   }
+ 
+diff --git a/core/modules/book/tests/src/Functional/BookTest.php b/core/modules/book/tests/src/Functional/BookTest.php
+index 6e97868a3bde6e565c3ff4e9d3a868d52913f769..227757d2179a60dbf4b67d9e387715554a8137b5 100644
+--- a/core/modules/book/tests/src/Functional/BookTest.php
++++ b/core/modules/book/tests/src/Functional/BookTest.php
+@@ -351,6 +351,7 @@ public function testGetTableOfContents() {
+      *   |- Node 1
+      *   |- Node 2
+      *    |- Node 5
++     *   |- Node 12
+      *  |- Node 3
+      *   |- Node 6
+      *    |- Node 7
+@@ -360,7 +361,19 @@ public function testGetTableOfContents() {
+      *        |- Node 11
+      *  |- Node 4
+      */
+-    foreach ([5 => 2, 6 => 3, 7 => 6, 8 => 7, 9 => 8, 10 => 9, 11 => 10] as $child => $parent) {
++    $added_nodes = [
++      5 => 2,
++      6 => 3,
++      7 => 6,
++      8 => 7,
++      9 => 8,
++      10 => 9,
++      11 => 10,
++      // Node 12's title starts with a larger number than nodes 1 and 2 for
++      // checking sort order is natural
++      12 => 0,
++    ];
++    foreach ($added_nodes as $child => $parent) {
+       $nodes[$child] = $this->createBookNode($book->id(), $nodes[$parent]->id());
+     }
+     $this->drupalGet($nodes[0]->toUrl('edit-form'));
+@@ -376,12 +389,28 @@ public function testGetTableOfContents() {
+     $manager = $this->container->get('book.manager');
+     $options = $manager->getTableOfContents($book->id(), 3);
+     // Verify that all expected option keys are present.
+-    $expected_nids = [$book->id(), $nodes[0]->id(), $nodes[1]->id(), $nodes[2]->id(), $nodes[3]->id(), $nodes[6]->id(), $nodes[4]->id()];
++    $expected_nids = [
++      $book->id(),
++      $nodes[0]->id(),
++      $nodes[1]->id(),
++      $nodes[2]->id(),
++      $nodes[12]->id(),
++      $nodes[3]->id(),
++      $nodes[6]->id(),
++      $nodes[4]->id(),
++    ];
+     $this->assertEquals($expected_nids, array_keys($options));
+     // Exclude Node 3.
+     $options = $manager->getTableOfContents($book->id(), 3, [$nodes[3]->id()]);
+     // Verify that expected option keys are present after excluding Node 3.
+-    $expected_nids = [$book->id(), $nodes[0]->id(), $nodes[1]->id(), $nodes[2]->id(), $nodes[4]->id()];
++    $expected_nids = [
++      $book->id(),
++      $nodes[0]->id(),
++      $nodes[1]->id(),
++      $nodes[2]->id(),
++      $nodes[12]->id(),
++      $nodes[4]->id(),
++    ];
+     $this->assertEquals($expected_nids, array_keys($options));
+   }
+ 
+diff --git a/core/modules/book/tests/src/Functional/BookTestTrait.php b/core/modules/book/tests/src/Functional/BookTestTrait.php
+index 43419a55ab39cb0fa3e1de0bdc1a0b78770a455a..7d4a8c27fc0edf96dbfced177de16d03828f0ac0 100644
+--- a/core/modules/book/tests/src/Functional/BookTestTrait.php
++++ b/core/modules/book/tests/src/Functional/BookTestTrait.php
+@@ -186,7 +186,7 @@ public function createBookNode($book_nid, $parent = NULL, $edit = []) {
+     // Used to ensure that when sorted nodes stay in same order.
+     static $number = 0;
+ 
+-    $edit['title[0][value]'] = str_pad($number, 2, '0', STR_PAD_LEFT) . ' - SimpleTest test node ' . $this->randomMachineName(10);
++    $edit['title[0][value]'] = $number . ' - SimpleTest test node ' . $this->randomMachineName(10);
+     $edit['body[0][value]'] = 'SimpleTest test body ' . $this->randomMachineName(32) . ' ' . $this->randomMachineName(32);
+     $edit['book[bid]'] = $book_nid;
+ 

@@ -1,0 +1,64 @@
+id: familyhistory_book
+label: 'Book'
+source:
+  plugin: family_history_migrate_tree
+  track_changes: true
+  path_env: FAMILYHISTORY_MEDIA_PATH
+  constants:
+    ROOT_NODE_ID: 1
+process:
+  title: name
+  body/value: description
+  body/format:
+    plugin: default_value
+    default_value: basic_html
+  field_media:
+    plugin: sub_process
+    source: media
+    process:
+      target_id:
+        plugin: migration_lookup
+        source: path
+        migration:
+          - familyhistory_media_document
+          - familyhistory_media_image
+        no_stub: true
+      bundle:
+        - plugin: static_map
+          source: extension
+          map:
+            jpg: image
+            jpeg: image
+            png: image
+            bmp: image
+            pdf: document
+            pptx: document
+          default_value: null
+        - plugin: skip_on_empty
+          method: process
+  book/bid: constants/ROOT_NODE_ID
+  book/weight:
+    plugin: default_value
+    source: weight
+    default_value: 0
+  _lookup_pid:
+    - plugin: skip_on_empty
+      source: parent_path
+      method: process
+    - plugin: migration_lookup
+      migration: familyhistory_book
+  book/pid:
+    plugin: null_coalesce
+    source:
+      - '@_lookup_pid'
+      - constants/ROOT_NODE_ID
+  uid:
+    plugin: default_value
+    default_value: 1
+destination:
+  plugin: book
+  default_bundle: book
+migration_dependencies:
+  required:
+    - familyhistory_media_document
+    - familyhistory_media_image

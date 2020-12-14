@@ -1,0 +1,30 @@
+id: familyhistory_media_image
+label: 'Media (Images)'
+source:
+  plugin: family_history_migrate_filesystem
+  track_changes: true
+  path_env: FAMILYHISTORY_MEDIA_PATH
+  include:
+    - '*.jpg'
+    - '*.jpeg'
+    - '*.png'
+    - '*.bmp'
+    - '*.JPG'
+    - '*.JPEG'
+    - '*.PNG'
+    - '*.BMP'
+process:
+  name: basename
+  field_media_image/target_id:
+    plugin: migration_lookup
+    migration: familyhistory_media_files
+    source: path
+  uid:
+    plugin: default_value
+    default_value: 1
+destination:
+  plugin: 'entity:media'
+  default_bundle: image
+migration_dependencies:
+  required:
+    - familyhistory_media_files

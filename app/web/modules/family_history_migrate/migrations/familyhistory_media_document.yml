@@ -1,0 +1,26 @@
+id: familyhistory_media_document
+label: 'Media (Documents)'
+source:
+  plugin: family_history_migrate_filesystem
+  track_changes: true
+  path_env: FAMILYHISTORY_MEDIA_PATH
+  include:
+    - '*.pdf'
+    - '*.pptx'
+    - '*.PDF'
+    - '*.PPTX'
+process:
+  name: basename
+  field_media_document/target_id:
+    plugin: migration_lookup
+    migration: familyhistory_media_files
+    source: path
+  uid:
+    plugin: default_value
+    default_value: 1
+destination:
+  plugin: 'entity:media'
+  default_bundle: document
+migration_dependencies:
+  required:
+    - familyhistory_media_files

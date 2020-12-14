@@ -1,0 +1,20 @@
+Index: s3fs_cors.module
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/s3fs_cors.module b/s3fs_cors.module
+--- a/s3fs_cors.module	(revision afd9841118fa05ff5eca3cdba3adf7e385139644)
++++ b/s3fs_cors.module	(date 1607959487232)
+@@ -206,8 +206,9 @@
+ 
+   $entity_type = $form['#entity_type'];
+   $bundle = $form['#bundle'];
+-  $entityManager = Drupal::service('entity.manager');
+-  $field_definitions = $entityManager->getFieldDefinitions($entity_type, $bundle);
++  /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager */
++  $entity_field_manager = Drupal::service('entity_field.manager');
++  $field_definitions = $entity_field_manager->getFieldDefinitions($entity_type, $bundle);
+   $s3_public = Settings::get('s3fs.use_s3_for_public');
+   $s3_private = Settings::get('s3fs.use_s3_for_private');
+   foreach ($form['#fields'] as $field) {

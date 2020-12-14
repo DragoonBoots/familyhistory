@@ -1,0 +1,41 @@
+id: familyhistory_media_files
+label: 'Media (files)'
+source:
+  plugin: family_history_migrate_filesystem
+  track_changes: true
+  path_env: FAMILYHISTORY_MEDIA_PATH
+  include:
+    - '*.jpg'
+    - '*.jpeg'
+    - '*.pdf'
+    - '*.png'
+    - '*.bmp'
+    - '*.pptx'
+    - '*.JPG'
+    - '*.JPEG'
+    - '*.PDF'
+    - '*.PNG'
+    - '*.BMP'
+    - '*.PPTX'
+  constants:
+    DRUPAL_FILE_DIRECTORY: 's3://familyhistorymedia'
+process:
+  _path_hash:
+    plugin: callback
+    source: path
+    callable: sha1
+  _destination_path:
+    plugin: concat
+    source:
+      - constants/DRUPAL_FILE_DIRECTORY
+      - '@_path_hash'
+      - name
+    delimiter: '/'
+  uri:
+    plugin: file_copy
+    source:
+      - absolute_path
+      - '@_destination_path'
+    move: false
+destination:
+  plugin: 'entity:file'

@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+  app:
+    build:
+      target: app_dev
+    ports:
+      - "8080:80"
+    environment:
+      APP_DATABASE_NAME: familyhistory
+      APP_DATABASE_USER: familyhistory
+      APP_DATABASE_PASSWORD: secret
+      APP_DATABASE_HOST: db
+      APP_DATABASE_PORT: 5432
+      DRUPAL_HASH_SALT: 1
+    depends_on:
+      - db
+      - mail
+#    volumes:
+#      - "./app:/opt/drupal"
+
+  db:
+    image: "postgres:12"
+    restart: always
+    environment:
+      POSTGRES_USER: familyhistory
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: familyhistory
+    expose:
+      - 5432
+    ports:
+    - "4321:5432"
+    volumes:
+      - /var/lib/postgresql/data
+
+  mail:
+    image: mailhog/mailhog
+    expose:
+      - 1025
+    ports:
+      - "8025:8025"

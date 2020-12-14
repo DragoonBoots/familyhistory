@@ -1,0 +1,53 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the installation profile.
+ */
+
+use Drupal\node\Entity\Node;
+use Drupal\shortcut\Entity\Shortcut;
+use Drupal\user\Entity\User;
+
+/**
+ * Implements hook_install().
+ *
+ * Perform actions to set up the site for this profile.
+ *
+ * @see system_install()
+ */
+function familyhistory_install() {
+  // Assign user 1 the "administrator" role.
+  $user = User::load(1);
+  $user->roles[] = 'administrator';
+  $user->save();
+
+  // Populate the default shortcut set.
+  $shortcut = Shortcut::create([
+    'shortcut_set' => 'default',
+    'title' => t('Add content'),
+    'weight' => -20,
+    'link' => ['uri' => 'internal:/node/add'],
+  ]);
+  $shortcut->save();
+  $shortcut = Shortcut::create([
+    'shortcut_set' => 'default',
+    'title' => t('All content'),
+    'weight' => -19,
+    'link' => ['uri' => 'internal:/admin/content'],
+  ]);
+  $shortcut->save();
+
+  // Create the root family history book page
+  /** @var \Drupal\node\NodeInterface $familyhistoryRoot */
+  $familyhistoryRoot = Node::create([
+    'title' => 'Keenan Family History',
+    'uid' => 1,
+    'type' => 'book',
+  ]);
+  $familyhistoryRoot->save();
+  $familyhistoryRoot->book = ['bid' => 'new'];
+  /** @var \Drupal\book\BookManagerInterface $bookManager */
+  $bookManager = \Drupal::service('book.manager');
+  $bookManager->updateOutline($familyhistoryRoot);
+}

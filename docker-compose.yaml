@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  app:
+    image: dragoonboots/familyhistory/app
+    build:
+      context: .
+      target: base
+    environment:
+      - APP_DATABASE_NAME
+      - APP_DATABASE_USER
+      - APP_DATABASE_PASSWORD
+      - APP_DATABASE_HOST
+      - APP_DATABASE_PORT
+      - APP_S3_ACCESS
+      - APP_S3_SECRET
+      - APP_S3_ENDPOINT=nyc3.digitaloceanspaces.com
+      - APP_S3_BUCKET=keenanfamilyhistory
+      - DRUPAL_HASH_SALT
+    restart: always
+    ports:
+      - "80:80"

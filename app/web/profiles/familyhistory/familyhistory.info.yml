@@ -1,0 +1,56 @@
+name: Family History
+type: profile
+core_version_requirement: ^9.1
+description: 'Family History profile'
+install:
+  - automated_cron
+  - big_pipe
+  - blazy
+  - blazy_ui
+  - block
+  - block_content
+  - book
+  - breakpoint
+  - ckeditor
+  - color
+  - colorbox
+  - comment
+  - config
+  - contact
+  - contextual
+  - datetime
+  - datetime_range
+  - dblog
+  - dynamic_page_cache
+  - editor
+  - field_ui
+  - file
+  - help
+  - honeypot
+  - image
+  - inline_form_errors
+  - layout_builder
+  - layout_discovery
+  - media
+  - media_library
+  - menu_link_content
+  - menu_ui
+  - node
+  - options
+  - page_cache
+  - path
+  - pathauto
+  - quickedit
+  - r4032login
+  - rdf
+  - s3fs
+  - s3fs_cors
+  - search
+  - shortcut
+  - taxonomy
+  - toolbar
+  - views
+  - views_ui
+themes:
+  - bartik
+  - seven

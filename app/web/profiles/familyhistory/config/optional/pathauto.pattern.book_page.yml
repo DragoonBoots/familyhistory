@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: book_page
+label: 'Book page'
+type: 'canonical_entities:node'
+pattern: '[node:book:parents:join-path]/[node:title]'
+selection_criteria:
+  414b670e-34b7-4d0b-8303-b2227cd938c1:
+    id: node_type
+    bundles:
+      book: book
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 414b670e-34b7-4d0b-8303-b2227cd938c1
+selection_logic: and
+weight: 0
+relationships: {  }

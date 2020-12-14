@@ -1,0 +1,90 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_display.comment.comment.default
+    - field.field.node.book.body
+    - field.field.node.book.comment
+    - field.field.node.book.field_media
+    - image.style.medium
+    - node.type.book
+  module:
+    - blazy
+    - comment
+    - layout_builder
+    - text
+    - user
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+id: node.book.default
+targetEntityType: node
+bundle: book
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  comment:
+    weight: 101
+    label: above
+    settings:
+      view_mode: default
+      pager_id: 0
+    third_party_settings: {  }
+    type: comment_default
+    region: content
+  field_media:
+    type: blazy_media
+    weight: 1
+    label: above
+    settings:
+      style: column
+      image_style: ''
+      media_switch: colorbox
+      box_style: ''
+      thumbnail_style: medium
+      box_media_style: ''
+      ratio: fluid
+      box_caption: auto
+      view_mode: full
+      box_caption_custom: ''
+      image: field_media_image
+      grid: 6
+      grid_medium: 3
+      grid_small: 2
+      caption:
+        title: title
+        field_media_document: '0'
+        alt: '0'
+      current_view_mode: default
+      background: false
+      class: ''
+      id: ''
+      link: ''
+      overlay: ''
+      title: ''
+      vanilla: false
+      icon: ''
+      layout: ''
+      cache: 0
+      skin: ''
+      fx: ''
+      responsive_image_style: ''
+      _uri: ''
+      breakpoints: {  }
+      sizes: ''
+      grid_header: ''
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 102
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

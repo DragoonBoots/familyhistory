@@ -1,0 +1,7 @@
+name: Family History Migrate
+type: module
+description: Migrate UJ's files
+package: Custom
+core_version_requirement: ^9
+dependencies:
+  - migrate
