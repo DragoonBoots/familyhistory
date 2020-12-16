@@ -51,7 +51,7 @@ RUN set -eux; \
 RUN set -eux; \
     # Need some extras for certain composer downloads
     apt-get update; \
-    apt-get install -y --no-install-recommends git openssh-client
+    apt-get install -y --no-install-recommends git openssh-client unzip
 COPY docker/ssh_known_hosts /etc/ssh/ssh_known_hosts
 
 # set recommended PHP.ini settings

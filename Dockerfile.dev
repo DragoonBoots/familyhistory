@@ -1,3 +1,9 @@
+###############################################################################
+# Development
+# Because DigitalOcean App Platform will always run the Dockerfile to the end,
+# this file exists.
+###############################################################################
+
 # Lightly modified from drupal:9 to not create a project inside the container
 FROM php:7.4-apache-buster as base
 
@@ -51,7 +57,7 @@ RUN set -eux; \
 RUN set -eux; \
     # Need some extras for certain composer downloads
     apt-get update; \
-    apt-get install -y --no-install-recommends git openssh-client
+    apt-get install -y --no-install-recommends git openssh-client unzip
 COPY docker/ssh_known_hosts /etc/ssh/ssh_known_hosts
 
 # set recommended PHP.ini settings

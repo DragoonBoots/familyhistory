@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "17527f8b36322c154d683df29847b123",
+    "content-hash": "77af4e54d3c16897be920d6d08f46450",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -64,16 +64,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.169.0",
+            "version": "3.170.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "d15a231355e4435fc33bab83df075ec31edd0a9b"
+                "reference": "7f457a08219173eba4b856cb7aef3a903cd790cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d15a231355e4435fc33bab83df075ec31edd0a9b",
-                "reference": "d15a231355e4435fc33bab83df075ec31edd0a9b",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/7f457a08219173eba4b856cb7aef3a903cd790cc",
+                "reference": "7f457a08219173eba4b856cb7aef3a903cd790cc",
                 "shasum": ""
             },
             "require": {
@@ -148,9 +148,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.169.0"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.170.0"
             },
-            "time": "2020-12-14T19:12:33+00:00"
+            "time": "2020-12-15T19:13:22+00:00"
         },
         {
             "name": "composer/installers",
@@ -805,12 +805,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "c5b850322aebd2b2de9a6dae7a6089a1f5496c05"
+                "reference": "1cac0fcda6bb48c67781c43d776b9d4fd44cb622"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/c5b850322aebd2b2de9a6dae7a6089a1f5496c05",
-                "reference": "c5b850322aebd2b2de9a6dae7a6089a1f5496c05",
+                "url": "https://api.github.com/repos/drupal/core/zipball/1cac0fcda6bb48c67781c43d776b9d4fd44cb622",
+                "reference": "1cac0fcda6bb48c67781c43d776b9d4fd44cb622",
                 "shasum": ""
             },
             "require": {
@@ -1049,7 +1049,7 @@
             "support": {
                 "source": "https://github.com/drupal/core/tree/9.2.x"
             },
-            "time": "2020-12-14T20:30:35+00:00"
+            "time": "2020-12-16T14:53:29+00:00"
         },
         {
             "name": "drupal/core-composer-scaffold",

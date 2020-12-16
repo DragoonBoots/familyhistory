@@ -1,0 +1,43 @@
+Index: core/lib/Drupal/Core/Database/Driver/pgsql/Install/Tasks.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/core/lib/Drupal/Core/Database/Driver/pgsql/Install/Tasks.php b/core/lib/Drupal/Core/Database/Driver/pgsql/Install/Tasks.php
+--- a/core/lib/Drupal/Core/Database/Driver/pgsql/Install/Tasks.php	(revision bce4634bb5c077a7ef2815725d430ac3e2977a67)
++++ b/core/lib/Drupal/Core/Database/Driver/pgsql/Install/Tasks.php	(date 1608083434924)
+@@ -143,7 +143,8 @@
+    */
+   public function checkBinaryOutput() {
+     $database_connection = Database::getConnection();
+-    if (!$this->checkBinaryOutputSuccess()) {
++    // Check server version.  No need for adjusting the format for versions > 9.
++    if ($this->getServerVersion() < 100000 && !$this->checkBinaryOutputSuccess()) {
+       // First try to alter the database. If it fails, raise an error telling
+       // the user to do it themselves.
+       $connection_options = $database_connection->getConnectionOptions();
+@@ -186,6 +187,24 @@
+     return ($bytea_output == 'escape');
+   }
+ 
++  /**
++   * Get the numeric server version.
++   *
++   * See https://www.postgresql.org/docs/current/libpq-status.html#LIBPQ-PQSERVERVERSION
++   * for how this value is formed.
++   *
++   * @return int
++   */
++  protected function getServerVersion(): int {
++    try {
++      return Database::getConnection()
++        ->query('SHOW server_version_num;')
++        ->fetchField();
++    } catch (\Exception $e) {
++      return 0;
++    }
++  }
++
+   /**
+    * Ensures standard_conforming_strings setting is 'on'.
+    *
