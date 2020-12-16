@@ -47,6 +47,7 @@ install:
   - s3fs_cors
   - search
   - shortcut
+  - smtp
   - taxonomy
   - toolbar
   - views

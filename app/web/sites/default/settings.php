@@ -794,10 +794,24 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
 /**
  * S3 Storage settings
  */
-$settings['s3fs.access_key'] = getenv("APP_S3_ACCESS");
-$settings['s3fs.secret_key'] = getenv("APP_S3_SECRET");
-$config['s3fs.settings']['hostname'] = getenv("APP_S3_ENDPOINT") ?: 'nyc3.digitaloceanspaces.com';
-$config['s3fs.settings']['bucket'] = getenv("APP_S3_BUCKET") ?: 'keenanfamilyhistory';
+$settings['s3fs.access_key'] = getenv('APP_S3_ACCESS');
+$settings['s3fs.secret_key'] = getenv('APP_S3_SECRET');
+$config['s3fs.settings']['hostname'] = getenv('APP_S3_ENDPOINT') ?: 'nyc3.digitaloceanspaces.com';
+$config['s3fs.settings']['bucket'] = getenv('APP_S3_BUCKET') ?: 'keenanfamilyhistory';
+
+/**
+ * Mail sending settings
+ */
+$config['smtp.settings']['smtp_host'] = getenv('APP_SMTP_HOST');
+$config['smtp.settings']['smtp_port'] = getenv('APP_SMTP_PORT');
+$config['smtp.settings']['smtp_protocol'] = getenv('APP_SMTP_PROTO') ?: 'standard';
+$config['smtp.settings']['smtp_autotls'] = getenv('APP_SMTP_PROTO') ? ((bool) getenv('APP_SMTP_PROTO')) : FALSE;
+if (getenv('APP_SMTP_USERNAME')) {
+  $config['smtp.settings']['smtp_username'] = getenv('APP_SMTP_USERNAME');
+}
+if (getenv('APP_SMTP_PASSWORD')) {
+  $config['smtp.settings']['smtp_password'] = getenv('APP_SMTP_PASSWORD');
+}
 
 /**
  * Load local development override configuration, if available.

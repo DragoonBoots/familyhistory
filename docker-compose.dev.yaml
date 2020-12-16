@@ -14,6 +14,12 @@ services:
       APP_DATABASE_HOST: db
       APP_DATABASE_PORT: 5432
       DRUPAL_HASH_SALT: 1
+      APP_SMTP_HOST: mail
+      APP_SMTP_PORT: 1025
+      APP_SMTP_PROTO: standard
+      APP_SMTP_AUTOTLS: 0
+      APP_SMTP_USERNAME:
+      APP_SMTP_PASSWORD:
     depends_on:
       - db
       - mail

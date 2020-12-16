@@ -25,6 +25,7 @@
         "drupal/r4032login": "^2.0",
         "drupal/s3fs": "dev-3.x",
         "drupal/s3fs_cors": "dev-1.x",
+        "drupal/smtp": "^1.0",
         "npm-asset/blazy": "^1.8",
         "npm-asset/jquery-colorbox": "^1.6",
         "oomphinc/composer-installers-extender": "^2.0"

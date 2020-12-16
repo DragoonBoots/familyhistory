@@ -17,6 +17,12 @@ services:
       - APP_S3_ENDPOINT=nyc3.digitaloceanspaces.com
       - APP_S3_BUCKET=keenanfamilyhistory
       - DRUPAL_HASH_SALT
+      - APP_SMTP_HOST
+      - APP_SMTP_PORT
+      - APP_SMTP_PROTO
+      - APP_SMTP_AUTOTLS
+      - APP_SMTP_USERNAME
+      - APP_SMTP_PASSWORD
     restart: always
     ports:
       - "80:80"

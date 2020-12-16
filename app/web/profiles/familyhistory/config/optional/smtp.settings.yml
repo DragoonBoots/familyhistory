@@ -1,0 +1,12 @@
+smtp_on: true
+smtp_hostbackup: ''
+smtp_timeout: 30
+smtp_from: familyhistory@dankeenan.org
+smtp_fromname: 'Family History'
+smtp_client_hostname: ''
+smtp_client_helo: ''
+smtp_allowhtml: '1'
+smtp_test_address: ''
+smtp_debugging: false
+prev_mail_system: php_mail
+smtp_keepalive: false
