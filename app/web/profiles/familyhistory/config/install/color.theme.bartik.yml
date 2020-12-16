@@ -8,9 +8,9 @@ palette:
   titleslogan: '#ffffff'
   text: '#301313'
   link: '#9d408d'
-logo: 'public://color/logo.svg'
+logo: 's3://color/logo.svg'
 stylesheets:
-  - 'public://color/colors.css'
+  - 's3://color/colors.css'
 files:
-  - 'public://color/logo.svg'
-  - 'public://color/colors.css'
+  - 's3://color/logo.svg'
+  - 's3://color/colors.css'
