@@ -64,6 +64,10 @@ RUN set -eux; \
     apt-get install -y --no-install-recommends git openssh-client unzip
 COPY docker/ssh_known_hosts /etc/ssh/ssh_known_hosts
 
+# Setup entrypoint
+COPY docker/entrypoint.sh /usr/local/bin/app_entrypoint
+ENTRYPOINT /usr/local/bin/app_entrypoint
+
 # https://github.com/drupal/drupal/blob/9.0.1/composer.lock#L4052-L4053
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/
 

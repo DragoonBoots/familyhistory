@@ -26,14 +26,14 @@
         "drupal/s3fs": "dev-3.x",
         "drupal/s3fs_cors": "dev-1.x",
         "drupal/smtp": "^1.0",
+        "drush/drush": "^10.3",
         "npm-asset/blazy": "^1.8",
         "npm-asset/jquery-colorbox": "^1.6",
         "oomphinc/composer-installers-extender": "^2.0"
     },
     "require-dev": {
         "drupal/devel": "^4.0",
-        "drupal/migrate_tools": "^5.0",
-        "drush/drush": "^10.3"
+        "drupal/migrate_tools": "^5.0"
     },
     "conflict": {
         "drupal/drupal": "*"
