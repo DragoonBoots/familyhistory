@@ -57,6 +57,9 @@ RUN { \
 		echo 'opcache.revalidate_freq=60'; \
 		echo 'opcache.fast_shutdown=1'; \
 	} > ${PHP_INI_DIR}/conf.d/opcache-recommended.ini
+RUN { \
+		echo 'memory_limit=256M'; \
+	} > ${PHP_INI_DIR}/conf.d/drupal.ini
 
 RUN set -eux; \
     # Need some extras for certain composer downloads
