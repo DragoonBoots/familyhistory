@@ -54,12 +54,6 @@ RUN set -eux; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	rm -rf /var/lib/apt/lists/*
 
-RUN set -eux; \
-    # Need some extras for certain composer downloads
-    apt-get update; \
-    apt-get install -y --no-install-recommends git openssh-client unzip
-COPY docker/ssh_known_hosts /etc/ssh/ssh_known_hosts
-
 # set recommended PHP.ini settings
 # see https://secure.php.net/manual/en/opcache.installation.php
 RUN { \
@@ -69,6 +63,12 @@ RUN { \
 		echo 'opcache.revalidate_freq=60'; \
 		echo 'opcache.fast_shutdown=1'; \
 	} > ${PHP_INI_DIR}/conf.d/opcache-recommended.ini
+
+RUN set -eux; \
+    # Need some extras for certain composer downloads
+    apt-get update; \
+    apt-get install -y --no-install-recommends git openssh-client unzip
+COPY docker/ssh_known_hosts /etc/ssh/ssh_known_hosts
 
 # https://github.com/drupal/drupal/blob/9.0.1/composer.lock#L4052-L4053
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/
@@ -81,15 +81,15 @@ WORKDIR /opt/drupal
 
 RUN set -eux; \
 	export COMPOSER_HOME="$(mktemp -d)"; \
-#	composer create-project --no-interaction "drupal/recommended-project:$DRUPAL_VERSION" ./; \
     composer install --no-interaction --optimize-autoloader --no-dev; \
 	# delete composer cache
 	rm -rf "$COMPOSER_HOME"
 RUN set -eux; \
     mkdir -p web/sites/default/files; \
-	chown -Rv www-data:www-data web/sites web/modules web/themes; \
+	chown -Rv www-data:www-data web/sites web/modules web/themes config/sync; \
 	rmdir /var/www/html; \
 	ln -sf /opt/drupal/web /var/www/html;
+
 
 #######################################
 # APP DEVELOPMENT SUPPORT
