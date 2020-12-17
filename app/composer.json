@@ -19,7 +19,7 @@
         "drupal/colorbox": "^1.6",
         "drupal/core-composer-scaffold": "^9.1",
         "drupal/core-project-message": "^9.1",
-        "drupal/core-recommended": "9.2.x-dev",
+        "drupal/core-recommended": "^9.1",
         "drupal/honeypot": "^2.0",
         "drupal/pathauto": "^1.8",
         "drupal/r4032login": "^2.0",
