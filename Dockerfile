@@ -1,3 +1,9 @@
+###############################################################################
+# Development
+# Because DigitalOcean App Platform will always run the Dockerfile to the end,
+# this file exists.
+###############################################################################
+
 # Lightly modified from drupal:9 to not create a project inside the container
 FROM php:7.4-apache-buster as base
 
@@ -5,48 +11,11 @@ FROM php:7.4-apache-buster as base
 RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
 
 # install the PHP extensions we need
-RUN set -eux; \
-	\
-	if command -v a2enmod; then \
-		a2enmod rewrite; \
-	fi; \
-	\
-	savedAptMark="$(apt-mark showmanual)"; \
-	\
-	apt-get update; \
-	apt-get install -y --no-install-recommends \
-		libfreetype6-dev \
-		libjpeg-dev \
-		libpng-dev \
-		libpq-dev \
-		libzip-dev \
-	; \
-	\
-	docker-php-ext-configure gd \
-		--with-freetype \
-		--with-jpeg=/usr \
-	; \
-	\
-	docker-php-ext-install -j "$(nproc)" \
-		gd \
-		opcache \
-		pdo_pgsql \
-		zip \
-	; \
-	\
-# reset apt-mark's "manual" list so that "purge --auto-remove" will remove all build dependencies
-	apt-mark auto '.*' > /dev/null; \
-	apt-mark manual $savedAptMark; \
-	ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
-		| awk '/=>/ { print $3 }' \
-		| sort -u \
-		| xargs -r dpkg-query -S \
-		| cut -d: -f1 \
-		| sort -u \
-		| xargs -rt apt-mark manual; \
-	\
-	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-	rm -rf /var/lib/apt/lists/*
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+RUN install-php-extensions gd opcache pdo_pgsql zip
+
+# Enable apache extensions
+RUN a2enmod rewrite
 
 # set recommended PHP.ini settings
 # see https://secure.php.net/manual/en/opcache.installation.php
