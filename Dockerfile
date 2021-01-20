@@ -5,7 +5,7 @@
 ###############################################################################
 
 # Lightly modified from drupal:9 to not create a project inside the container
-FROM php:7.4-apache-buster as base
+FROM php:8.0-apache-buster as base
 
 # Production PHP.ini
 RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini
