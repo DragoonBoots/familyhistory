@@ -805,7 +805,7 @@ $config['s3fs.settings']['bucket'] = getenv('APP_S3_BUCKET') ?: 'keenanfamilyhis
 $config['smtp.settings']['smtp_host'] = getenv('APP_SMTP_HOST');
 $config['smtp.settings']['smtp_port'] = getenv('APP_SMTP_PORT');
 $config['smtp.settings']['smtp_protocol'] = getenv('APP_SMTP_PROTO') ?: 'standard';
-$config['smtp.settings']['smtp_autotls'] = getenv('APP_SMTP_PROTO') ? ((bool) getenv('APP_SMTP_PROTO')) : FALSE;
+$config['smtp.settings']['smtp_autotls'] = getenv('APP_SMTP_AUTOTLS') ? ((bool) getenv('APP_SMTP_AUTOTLS')) : FALSE;
 if (getenv('APP_SMTP_USERNAME')) {
   $config['smtp.settings']['smtp_username'] = getenv('APP_SMTP_USERNAME');
 }
