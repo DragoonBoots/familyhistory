@@ -98,13 +98,6 @@
             "drupal/core": {
                 "book.module: Use natural sorting": "patches/core_book_use_natural_sorting.patch",
                 "Allow default Postgres settings": "patches/core_postgres_hex_mode.patch"
-            },
-            "drupal/s3fs_cors": {
-                "Remove deprecations": "patches/s3fs_cors_remove_deprecations.patch",
-                "Custom hostname": "patches/s3fs_cors_custom_hostname.patch"
-            },
-            "drupal/s3fs": {
-                "Remove deprecations": "https://www.drupal.org/files/issues/2020-07-24/use_isValidScheme_method-3161279.patch"
             }
         },
         "drupal-core-project-message": {
